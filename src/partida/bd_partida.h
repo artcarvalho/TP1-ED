@@ -15,7 +15,6 @@ void liberarBDPartidas(BDPartidas *bd);
 BDPartidas *carregaPartidas(const char *path);
 void buscaPartidas(BDPartidas *bdp, BDTimes *bdt, const char *prefixo, int tipoBusca);
 
-
 void consultarPartidas(BDPartidas *bd_partidas, BDTimes *bd_times, const char *nome_busca, int modo);
 void processaCampeonato(BDPartidas *bd_partidas, BDTimes *bd_times);
 

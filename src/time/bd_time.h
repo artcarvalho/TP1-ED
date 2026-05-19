@@ -19,4 +19,6 @@ void imprimirTabelaClassificacao(BDTimes *bd);
 
 void buscaTimes(const char *busca, BDTimes *bd);
 
+void buscaTimes(const char *busca, BDTimes *bd);
+
 #endif
