@@ -4,14 +4,17 @@
 #include "time.h"
 #include "bd_time.h"
 
-BDTimes *criaBDTimes(){
-    BDTimes *bd = (BDTimes*) malloc(sizeof(BDTimes));
+BDTimes *criaBDTimes()
+{
+    BDTimes *bd = (BDTimes *)malloc(sizeof(BDTimes));
 
-    if(bd == NULL){
+    if (bd == NULL)
+    {
         return NULL;
     }
 
-    for (int i = 0; i < 10; i++) {
+    for (int i = 0; i < 10; i++)
+    {
         bd->times[i] = NULL;
     }
 
@@ -20,29 +23,34 @@ BDTimes *criaBDTimes(){
     return bd;
 }
 
-BDTimes *carregaTimes(const char *path){
+BDTimes *carregaTimes(const char *path)
+{
     FILE *a = fopen(path, "r");
 
-    if(a == NULL){
+    if (a == NULL)
+    {
         return NULL;
     }
 
     BDTimes *bd = criaBDTimes();
-    if (bd == NULL) {
+    if (bd == NULL)
+    {
         fclose(a);
         return NULL;
     }
 
     char line[200];
 
-    fgets(line, sizeof(line), a); //pulando o header do csv
+    fgets(line, sizeof(line), a); // pulando o header do csv
 
-    //fazendo leitura linha a linha dos dados dos times e criando o TAD time com os dados.
-    while(fgets(line, 200, a) != NULL){
+    // fazendo leitura linha a linha dos dados dos times e criando o TAD time com os dados.
+    while (fgets(line, 200, a) != NULL)
+    {
 
         int tamanho = strlen(line);
 
-        if (tamanho > 0 && line[tamanho - 1] == '\n') {
+        if (tamanho > 0 && line[tamanho - 1] == '\n')
+        {
             line[tamanho - 1] = '\0';
         }
 
@@ -54,77 +62,83 @@ BDTimes *carregaTimes(const char *path){
 
         bd->times[id] = t;
         bd->qtd++;
-        
     }
-    
+
     fclose(a);
     return bd;
 }
 
-void liberaBDTimes(BDTimes *bd) {
-    if (bd == NULL) return;
+void liberaBDTimes(BDTimes *bd)
+{
+    if (bd == NULL)
+        return;
 
-    for (int i = 0; i < 10; i++) {
-        if (bd->times[i] != NULL) {
+    for (int i = 0; i < 10; i++)
+    {
+        if (bd->times[i] != NULL)
+        {
             liberaTime(bd->times[i]);
         }
     }
-    free(bd); 
+    free(bd);
 }
 
-Time *buscaTimes(const char *busca, BDTimes *bd){
-    if(bd == NULL){
+Time *buscaTimePorId(BDTimes *bd, int id)
+{
+    if (bd == NULL || id < 0 || id >= 10)
         return NULL;
-    }
-
-    for(i=0; i < bd->qtd; i++){
-        bd->times[i]->
-    }
+    return bd->times[id];
 }
 
-Time* buscaTimePorId(BDTimes *bd, int id) {
-    if (bd == NULL || id < 0 || id >= 10) return NULL;
-    return bd->times[id]; 
-}
-
-void consultarTime(BDTimes *bd, const char *prefixo) {
-    if (bd == NULL || prefixo == NULL) return;
+void buscaTimes(BDTimes *bd, const char *prefixo)
+{
+    if (bd == NULL || prefixo == NULL)
+        return;
     int encontrado = 0;
     int tam_prefixo = strlen(prefixo);
 
-    for (int i = 0; i < 10; i++) {
-        if (bd->times[i] != NULL) {
+    for (int i = 0; i < 10; i++)
+    {
+        if (bd->times[i] != NULL)
+        {
             // Verifica se o nome do time inicia com o prefixo digitado
-            if (strncmp(bd->times[i]->nome, prefixo, tam_prefixo) == 0) {
-                if (!encontrado) {
-                    
+            if (strncmp(bd->times[i]->nome, prefixo, tam_prefixo) == 0)
+            {
+                if (!encontrado)
+                {
+
                     printf("ID Time\t V E D GM GS S PG\n");
                     encontrado = 1;
                 }
                 Time *t = bd->times[i];
                 printf("%d %s\t %d %d %d %d %d %d %d\n",
-                       t->id, t->nome, t->v, t->e, t->d, t->gm, t->gs,
+                       t->id, t->nome, t->vitorias, t->empates, t->derrotas, t->gols_marcados, t->gols_sofridos,
                        obterSaldoGols(t), obterPontosGanhos(t));
             }
         }
     }
-    if (!encontrado) {
+    if (!encontrado)
+    {
         printf("Nenhum time encontrado com o prefixo \"%s\".\n", prefixo);
     }
 }
 
-void imprimirTabelaClassificacao(BDTimes *bd) {
-    if (bd == NULL) return;
+void imprimirTabelaClassificacao(BDTimes *bd)
+{
+    if (bd == NULL)
+        return;
     printf("Imprimindo classificação...\n\n");
-    
+
     printf("ID Time\t V E D GM GS S PG\n");
 
-    for (int i = 0; i < 10; i++) {
-        if (bd->times[i] != NULL) {
+    for (int i = 0; i < 10; i++)
+    {
+        if (bd->times[i] != NULL)
+        {
             Time *t = bd->times[i];
-            
+
             printf("%d %s\t %d %d %d %d %d %d %d\n",
-                   t->id, t->nome, t->v, t->e, t->d, t->gm, t->gs,
+                   t->id, t->nome, t->vitorias, t->empates, t->derrotas, t->gols_marcados, t->gols_sofridos,
                    obterSaldoGols(t), obterPontosGanhos(t));
         }
     }
