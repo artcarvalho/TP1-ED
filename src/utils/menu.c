@@ -46,7 +46,7 @@ void menu(BDTimes *bd, BDPartidas *bdp)
         break;
 
     case '6':
-        printf("Desculpe, Paixão! A função está em outro castelo.");
+        imprimirTabelaClassificacao(bd);
         break;
 
     default:
